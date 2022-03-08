@@ -50,13 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void fetchLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
             return;
         }
@@ -68,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     //    Log.i("Praktiskais", "error", location.toString());
                         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                                 .findFragmentById(R.id.map);
-                        mapFragment.getMapAsync(MapsActivity.this::onMapReady);
+                        mapFragment.getMapAsync(MapsActivity.this);
                         if (location != null) {
                             // Logic to handle location object
                         }
@@ -76,22 +70,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLatitude());
+        LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Marker in Sydney"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
     }
@@ -104,18 +90,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     fetchLastLocation();
-
-                } else {
-                    // Explain to the user that the feature is unavailable because
-                    // the features requires a permission that the user has denied.
-                    // At the same time, respect the user's decision. Don't link to
-                    // system settings in an effort to convince the user to change
-                    // their decision.
                 }
                 return;
         }
-        // Other 'case' lines to check for other
-        // permissions this app might request.
     }
 
 
