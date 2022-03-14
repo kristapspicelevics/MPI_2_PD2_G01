@@ -3,15 +3,20 @@ package lv.kristaps.mapreader;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -24,15 +29,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+
 import lv.kristaps.mapreader.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int PERMISSION_REQUEST_CODE = 101;
     private GoogleMap mMap;
     private Location currentLocation;
     private ActivityMapsBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
+    private MarkerOptions options = new MarkerOptions();
+    private ArrayList<LatLng> latlngs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +83,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LatLng valleta = new LatLng(57.5386968, 25.4234793);
+        LatLng viaC = new LatLng(57.5350387, 25.4241897);
+        LatLng theatre = new LatLng(57.5394002, 25.4255572);
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title("Marker in Sydney"));
-
+                .title("Current location"));
+        mMap.addMarker(new MarkerOptions()
+                .position(valleta)
+                .title("Valleta")
+        );
+        mMap.addMarker(new MarkerOptions()
+                .position(viaC)
+                .title("Via Cēsu")
+        );
+        mMap.addMarker(new MarkerOptions()
+                .position(theatre)
+                .title("Valmiera Theatre")
+        );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
     }
@@ -95,6 +118,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.api:
+                intent = new Intent(MapsActivity.this, ApiActivity.class); //pa prieksu kur esi un pēc tam kur gribi tikt
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
 

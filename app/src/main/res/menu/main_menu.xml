@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/map"
+        android:title="Google Map" />
+    <item
+        android:id="@+id/api"
+        android:title="API Requests" />
+
+</menu>
+
