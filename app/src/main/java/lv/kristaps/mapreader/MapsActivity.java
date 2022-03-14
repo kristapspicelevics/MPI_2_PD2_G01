@@ -92,14 +92,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions()
                 .position(valleta)
                 .title("Valleta")
+                .snippet("Shopping centre")
         );
         mMap.addMarker(new MarkerOptions()
                 .position(viaC)
                 .title("Via Cēsu")
+                .snippet("University")
         );
         mMap.addMarker(new MarkerOptions()
                 .position(theatre)
                 .title("Valmiera Theatre")
+                .snippet("Theatre")
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
